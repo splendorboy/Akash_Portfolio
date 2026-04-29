@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Akash A — Creative Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep: #0a0612;
+    --void: #06030e;
+    --purple-core: #7c3aed;
+    --purple-bright: #a855f7;
+    --purple-neon: #c084fc;
+    --purple-ghost: #e9d5ff;
+    --accent-gold: #fbbf24;
+    --accent-cyan: #22d3ee;
+    --text-primary: #f3e8ff;
+    --text-muted: #9d7ec7;
+    --glass: rgba(124,58,237,0.08);
+    --glass-border: rgba(168,85,247,0.2);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--void);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ── CURSOR ── */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--purple-neon);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--purple-bright);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: transform 0.18s ease, width 0.3s, height 0.3s;
+    opacity: 0.6;
+  }
+  body:hover .cursor { opacity: 1; }
+
+  /* ── GRAIN OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9997;
+    opacity: 0.35;
+  }
+
+  /* ── BACKGROUND ORBS ── */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+    animation: drift 12s ease-in-out infinite alternate;
+  }
+  .orb-1 { width: 500px; height: 500px; background: radial-gradient(circle, #5b21b6 0%, transparent 70%); top: -150px; left: -100px; animation-delay: 0s; }
+  .orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, #7c3aed 0%, transparent 70%); bottom: 10%; right: -100px; animation-delay: -4s; }
+  .orb-3 { width: 300px; height: 300px; background: radial-gradient(circle, #4c1d95 0%, transparent 70%); top: 40%; left: 50%; animation-delay: -8s; }
+
+  @keyframes drift {
+    0% { transform: translate(0,0) scale(1); }
+    100% { transform: translate(30px, 40px) scale(1.08); }
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(6,3,14,0.6);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.1em;
+    background: linear-gradient(135deg, var(--purple-neon), var(--accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--purple-neon); }
+
+  /* ── SECTIONS ── */
+  section { position: relative; z-index: 1; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 0 4rem;
+    gap: 4rem;
+  }
+  .hero-left { padding-top: 6rem; }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 100px;
+    padding: 0.4rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--purple-neon);
+    margin-bottom: 2rem;
+    animation: fadeUp 0.8s ease both;
+  }
+  .tag-dot {
+    width: 6px; height: 6px;
+    background: var(--accent-gold);
+    border-radius: 50%;
+    animation: pulse 1.5s ease infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.6); }
+  }
+
+  .hero-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 8vw, 7.5rem);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    animation: fadeUp 0.9s 0.1s ease both;
+  }
+  .hero-name .line-a { display: block; color: var(--text-primary); }
+  .hero-name .line-b {
+    display: block;
+    background: linear-gradient(90deg, var(--purple-bright) 0%, var(--accent-cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--text-muted);
+    max-width: 480px;
+    animation: fadeUp 1s 0.2s ease both;
+  }
+  .hero-sub span { color: var(--purple-neon); font-weight: 600; }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    animation: fadeUp 1s 0.3s ease both;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--purple-core), var(--purple-bright));
+    color: white;
+    padding: 0.85rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: none;
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 30px rgba(124,58,237,0.4);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(168,85,247,0.5); }
+  .btn-outline {
+    background: transparent;
+    color: var(--purple-neon);
+    padding: 0.85rem 2rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: none;
+    text-decoration: none;
+    display: inline-block;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--purple-bright); background: var(--glass); }
+
+  /* Hero Right — Visual */
+  .hero-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 5rem;
+    animation: fadeUp 1s 0.4s ease both;
+  }
+  .avatar-frame {
+    position: relative;
+    width: 340px; height: 340px;
+  }
+  .avatar-ring {
+    position: absolute;
+    inset: -16px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    background: linear-gradient(var(--void), var(--void)) padding-box,
+                linear-gradient(135deg, var(--purple-bright), var(--accent-cyan), var(--purple-bright)) border-box;
+    animation: spin 8s linear infinite;
+  }
+  .avatar-ring-2 {
+    position: absolute;
+    inset: -30px;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    background: linear-gradient(var(--void), var(--void)) padding-box,
+                linear-gradient(315deg, var(--accent-gold), var(--purple-core), var(--accent-cyan)) border-box;
+    animation: spin 14s linear infinite reverse;
+    opacity: 0.4;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .avatar-inner {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2d0f6b 0%, #1a0535 50%, #0c0226 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 2px solid rgba(124,58,237,0.3);
+  }
+  .avatar-initial {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 7rem;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--purple-neon), var(--accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .avatar-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: -0.5rem;
+  }
+  .floating-badge {
+    position: absolute;
+    background: rgba(6,3,14,0.9);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(12px);
+    border-radius: 12px;
+    padding: 0.6rem 1rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge-1 { bottom: 20px; left: -60px; color: var(--purple-neon); animation: float1 3s ease-in-out infinite; }
+  .badge-2 { top: 30px; right: -50px; color: var(--accent-gold); animation: float2 4s ease-in-out infinite; }
+  .badge-3 { top: 50%; right: -80px; transform: translateY(-50%); color: var(--accent-cyan); animation: float1 3.5s ease-in-out infinite; }
+  @keyframes float1 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  @keyframes float2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
+
+  /* Social strip */
+  .hero-social {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: absolute;
+    left: 1.5rem;
+    bottom: 3rem;
+    animation: fadeUp 1s 0.5s ease both;
+  }
+  .social-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    writing-mode: vertical-rl;
+    letter-spacing: 0.15em;
+    transition: color 0.3s;
+  }
+  .social-link:hover { color: var(--purple-neon); }
+  .social-divider { width: 1px; height: 60px; background: var(--glass-border); margin: 0 auto; }
+
+  /* ── SKILLS ── */
+  #skills {
+    padding: 7rem 4rem;
+  }
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--purple-neon);
+    margin-bottom: 0.75rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+  }
+  .section-label.visible { opacity: 1; transform: translateY(0); }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1;
+    letter-spacing: 0.03em;
+    margin-bottom: 3.5rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s 0.1s ease;
+  }
+  .section-title.visible { opacity: 1; transform: translateY(0); }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .skill-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.5s ease;
+  }
+  .skill-card.visible { opacity: 1; transform: translateY(0); }
+  .skill-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--purple-core), var(--purple-neon));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .skill-card:hover::before { transform: scaleX(1); }
+  .skill-card:hover { border-color: var(--purple-bright); transform: translateY(-4px) !important; }
+  .skill-icon {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--purple-core), var(--purple-bright));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 0 20px rgba(124,58,237,0.3);
+  }
+  .skill-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.4rem;
+  }
+  .skill-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
+
+  /* ── EXPERIENCE ── */
+  #experience { padding: 5rem 4rem 7rem; }
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--purple-bright), transparent);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 3rem;
+    padding-left: 2.5rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.6s ease;
+  }
+  .timeline-item.visible { opacity: 1; transform: translateX(0); }
+  .timeline-dot {
+    position: absolute;
+    left: -2rem;
+    top: 0.3rem;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--purple-bright);
+    box-shadow: 0 0 20px var(--purple-bright);
+    transform: translateX(-5px);
+  }
+  .timeline-year {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent-gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .timeline-company {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.6rem;
+    color: var(--text-primary);
+  }
+  .timeline-desc {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+    max-width: 640px;
+  }
+  .timeline-badge {
+    display: inline-block;
+    background: rgba(34,211,238,0.1);
+    border: 1px solid rgba(34,211,238,0.25);
+    color: var(--accent-cyan);
+    padding: 0.2rem 0.7rem;
+    border-radius: 100px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-left: 0.5rem;
+  }
+
+  /* ── PROJECTS ── */
+  #projects { padding: 5rem 4rem 7rem; }
+  .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .project-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.5s ease;
+  }
+  .project-card.visible { opacity: 1; transform: translateY(0); }
+  .project-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(168,85,247,0.06) 0%, transparent 60%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .project-card:hover::after { opacity: 1; }
+  .project-card:hover { border-color: rgba(168,85,247,0.4); transform: translateY(-4px) !important; }
+  .project-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    color: rgba(124,58,237,0.15);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .project-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.8rem;
+    background: linear-gradient(90deg, var(--text-primary), var(--purple-neon));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .project-desc { font-size: 0.84rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1.5rem; }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag {
+    background: rgba(124,58,237,0.12);
+    border: 1px solid rgba(124,58,237,0.25);
+    color: var(--purple-neon);
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── CERTIFICATIONS ── */
+  #certifications { padding: 5rem 4rem; }
+  .cert-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+  .cert-card {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 1.5rem 2rem;
+    transition: all 0.3s;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+  }
+  .cert-card.visible { opacity: 1; transform: translateY(0); }
+  .cert-card:hover { border-color: var(--purple-bright); transform: translateX(4px) !important; }
+  .cert-icon {
+    width: 40px; height: 40px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--purple-core), var(--accent-cyan));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+  .cert-name { font-weight: 600; font-size: 0.9rem; }
+  .cert-issuer { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+  /* ── CONTACT ── */
+  #contact {
+    padding: 7rem 4rem;
+    text-align: center;
+    position: relative;
+  }
+  .contact-glow {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(124,58,237,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .contact-email {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    display: block;
+    margin: 1.5rem 0;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .contact-email:hover { color: var(--purple-neon); }
+  .contact-info {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+  .contact-item { text-align: center; }
+  .contact-item-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.3rem;
+  }
+  .contact-item-val { font-size: 0.9rem; font-weight: 500; color: var(--purple-neon); }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px solid var(--glass-border);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+    position: relative; z-index: 1;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--void); }
+  ::-webkit-scrollbar-thumb { background: var(--purple-core); border-radius: 4px; }
+
+  /* Divider */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+    margin: 0 4rem;
+    width: calc(100% - 8rem);
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Ambient orbs -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-logo">AKASH A</div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-tag">
+      <span class="tag-dot"></span>
+      Currently @ ZEE Tamil Channel
+    </div>
+    <h1 class="hero-name">
+      <span class="line-a">AKASH</span>
+      <span class="line-b">A.</span>
+    </h1>
+    <p class="hero-sub">
+      <span>Creative Designer & Digital Content Creator</span> crafting immersive visuals, 3D renders, and motion graphics. B.E Computer Science student bridging technology with aesthetics.
+    </p>
+    <div class="hero-ctas">
+      <a href="#projects" class="btn-primary">View My Work</a>
+      <a href="#contact" class="btn-outline">Get In Touch</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="avatar-frame">
+      <div class="avatar-ring-2"></div>
+      <div class="avatar-ring"></div>
+      <div class="avatar-inner">
+        <span class="avatar-initial">A</span>
+        <span class="avatar-label">Creative · Design · Code</span>
+      </div>
+      <div class="floating-badge badge-1">⚡ Blender 3D</div>
+      <div class="floating-badge badge-2">🎬 Video Editor</div>
+      <div class="floating-badge badge-3">🎨 Canva Pro</div>
+    </div>
+  </div>
+
+  <div class="hero-social">
+    <a href="mailto:akashtheevill47478@gmail.com" class="social-link">Email</a>
+    <div class="social-divider"></div>
+    <a href="tel:+917904410406" class="social-link">Phone</a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <p class="section-label reveal">// Capabilities</p>
+  <h2 class="section-title reveal">SKILLS &<br>EXPERTISE</h2>
+
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <div class="skill-icon">🎨</div>
+      <div class="skill-name">Canva</div>
+      <div class="skill-desc">Designing social media creatives, posters, and brand materials with strong layout and typographic sensibility.</div>
+    </div>
+    <div class="skill-card reveal" style="transition-delay:0.1s">
+      <div class="skill-icon">✂️</div>
+      <div class="skill-name">CapCut</div>
+      <div class="skill-desc">Creating viral-ready video edits with smooth transitions, effects, and storytelling-driven cuts.</div>
+    </div>
+    <div class="skill-card reveal" style="transition-delay:0.2s">
+      <div class="skill-icon">🎞️</div>
+      <div class="skill-name">Premiere Pro</div>
+      <div class="skill-desc">Professional video editing for advertisements, promotions, and broadcast-ready content delivery.</div>
+    </div>
+    <div class="skill-card reveal" style="transition-delay:0.3s">
+      <div class="skill-icon">✨</div>
+      <div class="skill-name">After Effects</div>
+      <div class="skill-desc">Motion graphics, visual effects, and dynamic title cards for television and digital media production.</div>
+    </div>
+    <div class="skill-card reveal" style="transition-delay:0.4s">
+      <div class="skill-icon">🧊</div>
+      <div class="skill-name">Blender</div>
+      <div class="skill-desc">3D modeling, texturing, and photorealistic rendering for visual storytelling and creative projects.</div>
+    </div>
+    <div class="skill-card reveal" style="transition-delay:0.5s">
+      <div class="skill-icon">☕</div>
+      <div class="skill-name">Java & Automation</div>
+      <div class="skill-desc">Programming in Java and building workflow automation with UiPath for process efficiency.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <p class="section-label reveal">// Work History</p>
+  <h2 class="section-title reveal">WORK<br>EXPERIENCE</h2>
+
+  <div class="timeline">
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2026 — PRESENT</div>
+      <div class="timeline-company">ZEE TAMIL CHANNEL <span class="timeline-badge">Active</span></div>
+      <p class="timeline-desc">Contributing to television promos and program content for ZEE Tamil — refining raw footage into polished final outputs. Handling live and pre-produced graphic elements including captions, title cards, and visual overlays while working closely with production staff to meet scheduled telecast timelines.</p>
+    </div>
+
+    <div class="timeline-item reveal" style="transition-delay:0.2s">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2025</div>
+      <div class="timeline-company">PANIMALAR ENGINEERING COLLEGE</div>
+      <p class="timeline-desc">Produced and edited an official college advertisement video, managing on-site shooting and full post-production. Collaborated with faculty and the media team to deliver high-quality promotional content for college entrance campaigns.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-label reveal">// Selected Work</p>
+  <h2 class="section-title reveal">PROJECTS</h2>
+
+  <div class="projects-grid">
+    <div class="project-card reveal" id="pc1">
+      <div class="project-num">01</div>
+      <div class="project-title">Social Media Posting Bot</div>
+      <p class="project-desc">Developed and deployed an automation bot using UiPath to schedule and publish content across LinkedIn, Facebook, and Twitter. Improved posting consistency and significantly reduced manual workload through intelligent workflow automation.</p>
+      <div class="project-tags">
+        <span class="tag">UiPath</span>
+        <span class="tag">RPA</span>
+        <span class="tag">LinkedIn API</span>
+        <span class="tag">Automation</span>
+        <span class="tag">2024</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal" style="transition-delay:0.15s" id="pc2">
+      <div class="project-num">02</div>
+      <div class="project-title">Federated Learning Edge SOC</div>
+      <p class="project-desc">Developed a Federated Learning–Enhanced Edge SOC integrating decentralized anomaly detection and real-time threat correlation. Implemented privacy-preserving model training and graph-based multi-node attack detection for distributed cybersecurity environments.</p>
+      <div class="project-tags">
+        <span class="tag">Federated Learning</span>
+        <span class="tag">Cybersecurity</span>
+        <span class="tag">Graph ML</span>
+        <span class="tag">Edge AI</span>
+        <span class="tag">2026</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <p class="section-label reveal">// Credentials</p>
+  <h2 class="section-title reveal">CERTIFICATIONS</h2>
+
+  <div class="cert-grid">
+    <div class="cert-card reveal">
+      <div class="cert-icon">🎮</div>
+      <div>
+        <div class="cert-name">Unity 3D Game Development</div>
+        <div class="cert-issuer">Cursa Platform</div>
+      </div>
+    </div>
+    <div class="cert-card reveal" style="transition-delay:0.1s">
+      <div class="cert-icon">🗄️</div>
+      <div>
+        <div class="cert-name">Introduction to SQL</div>
+        <div class="cert-issuer">Simplilearn</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-glow"></div>
+  <p class="section-label reveal" style="text-align:center; margin: 0 auto 0.75rem;">// Let's Connect</p>
+  <h2 class="section-title reveal" style="text-align:center; margin-bottom:1rem;">GET IN<br>TOUCH</h2>
+  <p style="color:var(--text-muted); font-size:0.9rem; max-width:400px; margin:0 auto; text-align:center; line-height:1.7;">Open to creative collaborations, freelance projects, and full-time opportunities in design & content.</p>
+  <a href="mailto:akashtheevill47478@gmail.com" class="contact-email reveal">akashtheevill47478@gmail.com</a>
+
+  <div class="contact-info">
+    <div class="contact-item">
+      <div class="contact-item-label">Phone</div>
+      <div class="contact-item-val">+91 7904410406</div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-item-label">Location</div>
+      <div class="contact-item-val">Thiruverkadu, Tamil Nadu</div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-item-label">Languages</div>
+      <div class="contact-item-val">English · Tamil</div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-item-label">Status</div>
+      <div class="contact-item-val" style="color:var(--accent-gold)">● Available for Work</div>
+    </div>
+  </div>
+
+  <div style="margin-top:3rem">
+    <a href="mailto:akashtheevill47478@gmail.com" class="btn-primary">Send Me a Message</a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Akash A — Designed & Built with passion</span>
+  &nbsp;·&nbsp;
+  <span style="color:var(--purple-neon)">Thiruverkadu, Tamil Nadu</span>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '20px';
+      cursor.style.height = '20px';
+      cursor.style.background = 'var(--accent-cyan)';
+      ring.style.width = '54px';
+      ring.style.height = '54px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '12px';
+      cursor.style.height = '12px';
+      cursor.style.background = 'var(--purple-neon)';
+      ring.style.width = '36px';
+      ring.style.height = '36px';
+    });
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(r => obs.observe(r));
+
+  // Project card mouse glow
+  document.querySelectorAll('.project-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
+      const y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
+      card.style.setProperty('--mx', x + '%');
+      card.style.setProperty('--my', y + '%');
+    });
+  });
+
+  // Reveal animations for hero (immediate)
+  document.querySelectorAll('#hero .hero-tag, #hero .hero-name, #hero .hero-sub, #hero .hero-ctas, #hero .hero-right, #hero .hero-social').forEach(el => {
+    el.style.animationFillMode = 'both';
+  });
+</script>
+</body>
+</html>
